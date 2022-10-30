@@ -77,9 +77,14 @@ export class ProductsController {
     return this.productsService.uploadFile(file, userId);
   }
 
+  @Delete('delete-one')
+  deleteOne(@Query('id') productId: string, @UserId() currentUserId: string) {
+    return this.productsService.deleteOne(productId, currentUserId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+    return this.productsService.findById(id);
   }
 
   @Patch(':id')

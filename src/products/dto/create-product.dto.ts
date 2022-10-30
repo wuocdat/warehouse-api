@@ -6,11 +6,13 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  MaxLength,
 } from 'class-validator';
 import { setRequiredText } from 'src/share/utils';
 
 export class CreateProductDto {
   @IsNotEmpty({ message: setRequiredText('tên') })
+  @MaxLength(45)
   @IsString()
   name: string;
 

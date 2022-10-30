@@ -14,7 +14,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import * as ExcelJS from 'exceljs';
-import { MESSAGE } from 'src/share/messages/error-messages';
+import { MESSAGE } from 'src/share/messages/messages';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product, ProductDocument } from './schemas/product.schema';
@@ -83,6 +83,15 @@ export class ProductsService {
     const pageSize = +query.pageSize;
     const skip = (currentPage - 1) * pageSize;
     return this.findAll(query, currentUserId).skip(skip).limit(pageSize).exec();
+  }
+
+  findById(id: string) {
+    return this.productModel
+      .findById(id)
+      .populate('productType', '-__v')
+      .populate('brand', '-__v')
+      .select('-__v')
+      .exec();
   }
 
   count(query: FindAllProductDto, currentUserId: string) {
@@ -253,13 +262,32 @@ export class ProductsService {
 
         await this.create(currentProduct, currentUserId);
       } catch (error) {
-        console.log(error);
         result.error++;
         result.errorRows.push(rowIndex - 1);
       }
     }
 
     return result;
+  }
+
+  async deleteMany(typeId: string, currentUserId) {
+    const { deletedCount } = await this.productModel.deleteMany({
+      productType: typeId,
+      createdBy: currentUserId,
+    });
+
+    return deletedCount;
+  }
+
+  async deleteOne(productId: string, currentUserId: string) {
+    const { deletedCount } = await this.productModel.deleteOne({
+      _id: productId,
+      createdBy: currentUserId,
+    });
+
+    if (!deletedCount) throw new BadRequestException();
+
+    return { message: MESSAGE.SUCCESS.DELETE_ITEM };
   }
 
   findOne(id: number) {

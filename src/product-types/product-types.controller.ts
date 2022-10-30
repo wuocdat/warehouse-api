@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { ProductTypeDto } from './dto/interface.dto';
+import { Controller, Get, Post, Body, Query, Delete } from '@nestjs/common';
 import { ProductTypesService } from './product-types.service';
 import { CreateProductTypeDto } from './dto/create-product-type.dto';
 import { UserId } from 'src/share/decorators';
@@ -18,5 +19,15 @@ export class ProductTypesController {
   @Get('/all')
   findAll(@UserId() userId: string) {
     return this.productTypesService.findAllById(userId);
+  }
+
+  @Get()
+  findMany(@UserId() id: string, @Query() productTypeDto: ProductTypeDto) {
+    return this.productTypesService.findMany(id, productTypeDto);
+  }
+
+  @Delete('delete-one')
+  deleteOne(@Query('id') id: string, @UserId() currentUserId: string) {
+    return this.productTypesService.deleteOne(id, currentUserId);
   }
 }

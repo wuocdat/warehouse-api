@@ -1,4 +1,4 @@
-import { MESSAGE } from './messages/error-messages';
+import { MESSAGE } from './messages/messages';
 
 export const setRequiredText = (document: string) => {
   return MESSAGE.ERROR.REQUIRE.replace('{document}', document);
