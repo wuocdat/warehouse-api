@@ -35,6 +35,11 @@ export class ProductsController {
     return this.productsService.findMany(query, userId);
   }
 
+  @Get('all')
+  findAll(@UserId() userId: string) {
+    return this.productsService.findAllQuery(userId);
+  }
+
   @Get('count')
   count(@Query() query: FindAllProductDto, @UserId() userId: string) {
     return this.productsService.count(query, userId);

@@ -78,6 +78,10 @@ export class ProductsService {
       .select('-__v');
   }
 
+  findAllQuery(currentUserId: string) {
+    return this.findAll({}, currentUserId).exec();
+  }
+
   findMany(query: FindManyProductDto, currentUserId: string) {
     const currentPage = +query.currentPage;
     const pageSize = +query.pageSize;

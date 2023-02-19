@@ -13,6 +13,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { BrandModule } from './brand/brand.module';
 import { ProductsModule } from './products/products.module';
 import { SupplierModule } from './supplier/supplier.module';
+import { IOrderModule } from './i-order/i-order.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { SupplierModule } from './supplier/supplier.module';
     BrandModule,
     ProductsModule,
     SupplierModule,
+    IOrderModule,
   ],
   controllers: [AppController],
   providers: [
